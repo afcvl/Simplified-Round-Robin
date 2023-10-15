@@ -5,41 +5,13 @@ prontos = []
 
 block = []
 
-process_table = []
-
-## =========================== Carrega arquivos ===========================================
-
-def carrega_arquivos():
-    
-    for i in range(11):
-        if i == 0:
-            continue
-        
-        path = 'programas/' + '0' + f'{i}.txt'
-        if i == 10:
-            path = 'programas/' + f'{i}.txt'
-                     
-        
-        with open(path, 'r') as file:
-            codigo_fonte = file.read()
-            instrucoes = codigo_fonte.split('\n')
-            
-        processo = BCP(instrucoes[0], instrucoes[1:-1] , 0, None, None)
-                
-        process_table.append(processo)
-        prontos.append(processo)
-        
-    return process_table, prontos
-    
-
-
-
+tabela_de_processos = []
 
 
 
 class Escalonador:
-    def __init__(self, process_table, pronto, bloqueado):
-        self.process_table = process_table
+    def __init__(self, tabela_de_processos, pronto, bloqueado):
+        self.tabela_de_processos = tabela_de_processos
         self.lista_pronto = pronto
         self.lista_bloqueado = bloqueado
         self.quantum = 3
@@ -71,6 +43,7 @@ class Escalonador:
             
             # ------------ Quantum ------------
             step = 0
+            n_comp = 0
             while step < self.quantum:
                 
                 instrucao = processo_atual.instrucoes[processo_atual.program_counter]
@@ -85,9 +58,17 @@ class Escalonador:
                     break
                 
                 elif instrucao == 'COM':
+                    n_comp += 1
                     pass
                 
                 elif instrucao == 'SAIDA':
+                    
+                    for proc in self.tabela_de_processos:      # remoção do processo da tabela de processos   
+                                                                                                #####     QUEBRADOOO ############
+                        if tabela_de_processos.is_equal(processo_atual):
+                            tabela_de_processos.pop(proc)
+                        
+                        
                     break
                     
                 else:
@@ -101,17 +82,47 @@ class Escalonador:
                     else:
                         processo_atual.register2 = valor
                     
+                    n_comp += 1
+                    
                 
                 step += 1
+                
+            if n_comp == 3:                     # insere novamente o processo na lista de prontos
+                prontos.insert(len(prontos), processo_atual)
 
             self.decrementa_espera_bloqueados()
             
             
+            
 
 
-process_table, prontos = carrega_arquivos()
+## =========================== Carrega arquivos ===========================================
+def carrega_arquivos():
+    for i in range(11):
+        if i == 0:
+            continue
+        
+        path = 'programas/' + '0' + f'{i}.txt'
+        if i == 10:
+            path = 'programas/' + f'{i}.txt'
+                     
+        
+        with open(path, 'r') as file:
+            codigo_fonte = file.read()
+            instrucoes = codigo_fonte.split('\n')
+            
+        processo = BCP(instrucoes[0], instrucoes[1:-1] , 0, None, None)
+                
+        tabela_de_processos.append(processo)
+        prontos.append(processo)
+        
+    return tabela_de_processos, prontos
+    ## ==================================================================================
 
-escalonador = Escalonador(process_table, prontos, [])
+
+tabela_de_processos, prontos = carrega_arquivos()
+
+escalonador = Escalonador(tabela_de_processos, prontos, [])
 
 escalonador.run()
 

@@ -12,3 +12,7 @@ class BCP:
         
     def decrementa_espera(self):
         self.tempo_de_espera -= 1
+
+    def is_equal(self, processo2):
+        
+        return self.process_name == processo2.process_name
