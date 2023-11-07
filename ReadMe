@@ -1,0 +1,11 @@
+Projeto realizado na disciplina de Sistemas Operacionais ministrada pelo professor Norton Trevisan Roman no
+Curso de Sistemas de Informação da Universidade de São Paulo (USP)
+
+O objetivo era construir um escalonador de processos simplificado para fins didáticos que implementava o algoritmo 
+Round-robin.
+
+- Os códigos dos processos teóricos estão na pasta "programas".
+
+- o valor máximo de quanta utilizado pelos processos a cada surto de CPU é definido no arquivo "quantun.txt"
+
+- a saída do sistema se dá no arquivo "logXX.txt"
